@@ -1,4 +1,3 @@
-#!perl
 # Copyright (c) 2016  Timm Murray
 # All rights reserved.
 # 
@@ -22,15 +21,17 @@
 # CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
 # POSSIBILITY OF SUCH DAMAGE.
-use v5.14;
-use warnings;
-use Mojolicious::Lite;
+use Mojo::Base -strict;
+use Test::More;
+use Test::Mojo;
+
+use FindBin;
+require "$FindBin::Bin/../app.pl";
+my $t = Test::Mojo->new;
 
 
-get '/' => sub {
-    my $c = shift;
-    $c->render( text => 'Hi' );
-};
+$t->get_ok( '/' )
+    ->status_is(200);
 
 
-app->start;
+done_testing();

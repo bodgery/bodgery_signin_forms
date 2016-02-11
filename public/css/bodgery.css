@@ -60,6 +60,7 @@ select {
     border: solid 5px #1E4045;
     transition: border 0.3s;
     background-color: #2A7E8A;
+    margin-bottom: 5px;
 }
 
 select:focus, 

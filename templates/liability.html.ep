@@ -11,7 +11,7 @@
 
 <form method="POST" action="/liability">
 
-<p>Between <input type="text" name="name" value="(Your Name Here)"> and The Bodgery,
+<p>Between <input type="text" name="name" placeholder="(Your Name Here)"> and The Bodgery,
 4444 Robertson Rd., Madison, WI 53714.</p>
 
 <p><input type="checkbox" name="check1"><label for="check1">By signing this agreement, I 
@@ -30,10 +30,9 @@ The Bodgery is not responsible for any lost, damaged, or stolen property.</label
 age or older, and that I am mentally competent to sign this release.</label></p>
 
 <ul class="form_list">
-<li><input type="text" name="addr" value="(Address)"></li>
-<li><input type="text" name="city" value="Madison"></li>
-<li><select value="state">
-    <option value="WI">WI</option>
+<li><input type="text" name="addr" placeholder="(Address)"></li>
+<li><input type="text" name="city" placeholder="Madison"></li>
+<li><select name="state">
     <option value="AL">Alabama</option>
     <option value="AK">Alaska</option>
     <option value="AZ">Arizona</option>
@@ -83,20 +82,20 @@ age or older, and that I am mentally competent to sign this release.</label></p>
     <option value="VA">Virginia</option>
     <option value="WA">Washington</option>
     <option value="WV">West Virginia</option>
-    <option value="WI">Wisconsin</option>
+    <option value="WI" selected="selected">Wisconsin</option>
     <option value="WY">Wyoming</option>
 </select></li>
-<li><input type="text" name="zip" value="(Zip)"></li>
-<li><input type="text" name="phone" value="(Phone)"></li>
-<li><input type="text" name="email" value="(E-Mail)"></li>
-<li><input type="text" name="emergency_contact_name" value="(Emergency Contact Name)"></li>
-<li><input type="text" name="emergency_contact_phone" value="(Emergency Contact Phone)"></li>
+<li><input type="text" name="zip" placeholder="(Zip)"></li>
+<li><input type="text" name="phone" placeholder="(Phone)"></li>
+<li><input type="text" name="email" placeholder="(E-Mail)"></li>
+<li><input type="text" name="emergency_contact_name" placeholder="(Emergency Contact Name)"></li>
+<li><input type="text" name="emergency_contact_phone" placeholder="(Emergency Contact Phone)"></li>
 </ul>
 
 <p>TODO signature</p>
 <p>TODO Date</p>
 
-<p><input type="submit" value="Submit"></p>
+<p><input type="submit" placeholder="Submit"></p>
 
 </form>
 

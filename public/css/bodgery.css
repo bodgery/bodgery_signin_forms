@@ -1,0 +1,74 @@
+/*
+See palette:
+http://paletton.com/palette.php?uid=13l0u0kkHlloJEAmGsciAe8gC7b
+*/
+
+body {
+    background-color: #266068;
+    color: #112123;
+}
+
+h1 {
+    text-align: center;
+}
+
+h2 {
+    color: #112123;
+    text-align: center;
+}
+
+.button {
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 10px;
+    width: 3em;
+    font-size: 5em;
+    background-color: #1E4045;;
+    border-width: 5px;
+    border-color: #112123;
+    text-align: center;
+}
+
+a {
+    text-decoration: none;
+    color: #2DA8BA;
+}
+
+a:visited {
+    color: #2DA8BA;
+}
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+input[type="text"] {
+    border: solid 5px #1E4045;
+    transition: border 0.3s;
+    background-color: #2A7E8A;
+    margin-bottom: 5px;
+}
+
+input[type="text"]:focus, 
+input[type="text"].focus {
+    border: solid 5px #112123;
+}
+
+select {
+    border: solid 5px #1E4045;
+    transition: border 0.3s;
+    background-color: #2A7E8A;
+}
+
+select:focus, 
+select.focus {
+    border: solid 5px #112123;
+}
+
+input[type="checkbox"]:checked + label {
+    border: solid 5px #1E4045;
+    transition: border 0.3s;
+    background-color: #2A7E8A;
+}

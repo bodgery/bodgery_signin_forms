@@ -28,8 +28,18 @@ use Mojolicious::Lite;
 
 
 get '/' => sub {
+    my ($c) = @_;
+    $c->reply->static( 'index.html' );
+};
+
+get '/liability' => sub {
     my $c = shift;
-    $c->render( text => 'Hi' );
+    $c->render( template => 'liability' );
+};
+
+post '/liability' => sub {
+    my $c = shift;
+    $c->render( template => 'liability_submit' );
 };
 
 

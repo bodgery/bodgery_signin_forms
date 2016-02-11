@@ -30,8 +30,25 @@ require "$FindBin::Bin/../app.pl";
 my $t = Test::Mojo->new;
 
 
-$t->get_ok( '/' )
+$t->get_ok( '/liability' )
     ->status_is(200);
+
+$t->post_ok( '/liability', form => {
+    name => 'Foo Bar',
+    addr => '100 Main St',
+    city => 'Madison',
+    state => 'wi',
+    zip => '53714',
+    phone => '608 555 2125',
+    email => 'foo@example.com',
+    emergency_contact_name => 'Bar Baz',
+    emergency_contact_phone => '608 555 2126',
+    signature => {},
+    check1 => 1,
+    check2 => 1,
+    check3 => 1,
+    check4 => 1,
+})->status_is( 200 );
 
 
 done_testing();

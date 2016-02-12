@@ -7,7 +7,14 @@
 </head>
 <body>
 
-<h1>Liability Release</h1>
+<h1>
+    <img
+        src="/bodgery_logo.svg"
+        width="35"
+        height="35"
+        alt="Bodgery Logo">
+    Liability Release
+</h1>
 
 <form method="POST" action="/liability">
 

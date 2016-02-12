@@ -17,6 +17,14 @@ h2 {
     text-align: center;
 }
 
+.header {
+    text-align: center;
+}
+
+.content {
+    text-align: center;
+}
+
 .button {
     margin-left: auto;
     margin-right: auto;
@@ -54,6 +62,14 @@ input[type="text"] {
 input[type="text"]:focus, 
 input[type="text"].focus {
     border: solid 5px #112123;
+}
+
+input[type="submit"] {
+    border: solid 5px #1E4045;
+    transition: border 0.3s;
+    background-color: #2A7E8A;
+    color: #112123;
+    padding: 10px;
 }
 
 select {

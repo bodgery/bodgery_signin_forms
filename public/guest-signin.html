@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Welcome to the Bodgery!</title>
+    <link rel="stylesheet" type="text/css" href="/css/bodgery.css">
+</head>
+<body>
+    <div class="header"><img
+        src="/bodgery_logo.svg"
+        width="100"
+        height="100"
+        alt="Bodgery Logo">
+
+    <h1>
+        Welcome to the Bodgery!
+    </h1>
+    <h2>Guest Signin</h2>
+    </div>
+
+    <div class="content">
+        <form method="POST" action="/guest-signin">
+        <ul>
+            <li><input type="text" name="full_name" placeholder="(Full Name)"></li>
+            <li><input type="text" name="member_hosting"
+                placeholder="(Member Hosting You)"></li>
+            <li><input type="text" name="heard_from"
+                placeholder="(How did you hear of us?)"></li>
+            <li><input type="checkbox" name="join_mailing_list">
+                <label for="join_mailing_list">Join our mailing list?</label></li>
+        </ul>
+        <p><input type="submit" value="Submit"></p>
+        </form>
+    </div>
+</body>
+</html>

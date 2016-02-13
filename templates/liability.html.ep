@@ -2,10 +2,26 @@
 <html>
 <head>
     <title>Liability Release</title>
-    <script type="text/javascript" src="/js/jquery-2.2.0.min.js"></script>
+
     <link rel="stylesheet" type="text/css" href="/css/bodgery.css">
+    <link rel="stylesheet" type="text/css" href="/css/jquery.signaturepad.css">
+
+    <script type="text/javascript" src="/js/jquery-2.2.0.min.js"></script>
+    <script type="text/javascript" src="/js/flashcanvas.js"></script>
+    <script type="text/javascript" src="/js/jquery.signaturepad.min.js"></script>
+    <script type="text/javascript" src="/js/json2.min.js"></script>
 </head>
 <body>
+
+<script>
+    $(document).ready(function() {
+        $('.sigPad').signaturePad({
+            drawOnly: true,
+            defaultAction: "drawIt",
+            canvas: "#signature_pad"
+        });
+    });
+</script>
 
 <h1>
     <img
@@ -134,9 +150,16 @@ value="<%= $args{addr} =%>"></li>
         <label for="join_mailing_list">Join our mailing list?</label></li>
 </ul>
 
-<p>TODO signature</p>
 % my $now = DateTime->now;
-<p>Date: <%= $now->ymd( '/' ) %>
+<p><strong>Date</strong>: <%= $now->ymd( '/' ) %>
+
+<!-- TODO signature
+<div>
+    <strong>Signature</strong>: <br>
+    <canvas id="signature_pad" width="198" height="55"></canvas>
+    <input type="hidden" name="output" class="output">
+</div>
+-->
 
 <p><input type="submit" value="Submit"></p>
 

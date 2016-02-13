@@ -34,8 +34,8 @@ use constant DB_PASSWORD => '';
 
 use constant LIABILITY_INSERT => q{INSERT INTO liability_waivers}
     . q{ (full_name, check1, check2, check3, check4, addr, city, state, zip, phone, email}
-    . q{, emergency_contact_name, emergency_contact_phone, signature)}
-    . q{ VALUES (?, 1, 1, 1, 1, ?, ?, ?, ?, ?, ?, ?, ?)};
+    . q{, emergency_contact_name, emergency_contact_phone, heard_from, signature)}
+    . q{ VALUES (?, true, true, true, true, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)};
 use constant GUEST_INSERT => q{INSERT INTO guest_signin}
     . q{ (full_name, member_hosting, email, join_mailing_list)}
     . q{ VALUES (?, ?, ?, ?)};
@@ -107,7 +107,7 @@ post '/liability' => sub {
     my $hosting = $c->param( 'member_hosting' );
     my $heard_about_from = $c->param( 'heard_from' );
     my $do_join_mailing_list = $c->param( 'join_mailing_list' );
-    my $signature = $c->param( 'signature' );
+    my $signature = $c->param( 'output' );
 
     # Force to boolean
     $do_join_mailing_list = !! $do_join_mailing_list;
@@ -204,7 +204,8 @@ sub check_liability_params
     push @errors => 'Heard About From should only be letters and spaces'
         unless $args->{heard_about_from} =~ /\A (?:[\w\s\.]*) \z/x;
 
-    push @errors => 'Signature should be filled in' unless $args->{signature};
+    # TODO signature
+    #push @errors => 'Signature should be filled in' unless $args->{signature};
 
 
     return @errors;
@@ -241,7 +242,7 @@ sub save_liability_data
     my $sth = $dbh->prepare_cached( LIABILITY_INSERT )
         or die "Can't prepare statement: " . $dbh->errstr;
     $sth->execute( @args{qw{ name addr city state zip phone email emerg_name emerg_phone 
-        heard_about_from signature }} )
+        heard_about_from }}, '' )
         or die "Can't execute statement: " . $sth->errstr;
     $sth->finish;
 
@@ -253,10 +254,12 @@ sub save_guest_data
     my ($args) = @_;
     my %args = %$args;
 
+    my $do_join = $args->{do_join_mailing_list} ? 1 : 0;
+
     my $dbh = get_dbh();
     my $sth = $dbh->prepare_cached( GUEST_INSERT )
         or die "Can't prepare statement: " . $dbh->errstr;
-    $sth->execute( @args{qw{ name hosting email do_join_mailing_list }} )
+    $sth->execute( @args{qw{ name hosting email }}, $do_join )
         or die "Can't execute statement: " . $sth->errstr;
     $sth->finish;
 

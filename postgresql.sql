@@ -10,6 +10,7 @@ CREATE TABLE liability_waivers (
     city TEXT NOT NULL,
     state TEXT NOT NULL,
     zip TEXT NOT NULL,
+    phone TEXT NOT NULL,
     email TEXT NOT NULL,
     emergency_contact_name TEXT NOT NULL,
     emergency_contact_phone TEXT NOT NULL,

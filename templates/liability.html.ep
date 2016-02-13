@@ -16,29 +16,46 @@
     Liability Release
 </h1>
 
+<ul class="errors">
+<% my @errors = @{ $c->stash( 'errors' )}; %>
+<% my %args = %{ $c->stash( 'args' )}; %>
+%
+% foreach (@errors) {
+<li><%= $_; =%></li>
+% }
+</ul>
+
 <form method="POST" action="/liability">
 
-<p>Between <input type="text" name="name" placeholder="(Your Name Here)"> and The Bodgery,
+<p>Between <input type="text" name="name" placeholder="(Your Name Here)" value="<%= $args{name} =%>"> and The Bodgery,
 4444 Robertson Rd., Madison, WI 53714.</p>
 
-<p><input type="checkbox" name="check1"><label for="check1">By signing this agreement, I 
-acknowledge that The Bodgery is a dangerous place and I agree to HOLD HARMLESS The Bodgery, 
-its members, its officers, and its directors.</label></p>
+<p><input type="checkbox" name="check1" value="1"
+<%= $args{check1} ? 'checked=""' : '' =%>><label for="check1">
+By signing this agreement, I acknowledge that The Bodgery is a dangerous place and I agree 
+to HOLD HARMLESS The Bodgery, its members, its officers, and its directors.</label></p>
 
-<p><input type="checkbox" name="check2"><label for="check2">I understand that I am 
-personally responsibly for my safety and actions. I will follow all safety instructions and 
-signage at The Bodgery.</label></p>
+<p><input type="checkbox" name="check2" value="1"
+<%= $args{check2} ? 'checked=""' : '' =%>><label for="check2">I understand that I 
+am personally responsibly for my safety and actions. I will follow all safety instructions 
+and signage at The Bodgery.</label></p>
 
-<p><input type="checkbox" name="check3"><label for="check3">I also understand that I am 
-responsible for properly monitoring and labeling anything I bring to The Bodgery and that 
-The Bodgery is not responsible for any lost, damaged, or stolen property.</label></p>
+<p><input type="checkbox" name="check3" value="1"
+<%= $args{check3} ? 'checked=""' : '' =%>><label for="check3">I also understand 
+that I am responsible for properly monitoring and labeling anything I bring to The Bodgery 
+and that The Bodgery is not responsible for any lost, damaged, or stolen property.
+</label></p>
 
-<p><input type="checkbox" name="check4"><label for="check4">I affirm that I am 18 years of 
-age or older, and that I am mentally competent to sign this release.</label></p>
+<p><input type="checkbox" name="check4" value="1"
+<%= $args{check4} ? 'checked="checked"' : '' =%>>
+<label for="check4">I affirm that I am 18 
+years of age or older, and that I am mentally competent to sign this release.</label></p>
 
 <ul class="form_list">
-<li><input type="text" name="addr" placeholder="(Address)"></li>
-<li><input type="text" name="city" placeholder="Madison"></li>
+<li><input type="text" name="addr" placeholder="(Address)"
+value="<%= $args{addr} =%>"></li>
+<li><input type="text" name="city" placeholder="(City)"
+    value="<%= $args{city} || "Madison" =%>"></li>
 <li><select name="state">
     <option value="AL">Alabama</option>
     <option value="AK">Alaska</option>
@@ -92,17 +109,36 @@ age or older, and that I am mentally competent to sign this release.</label></p>
     <option value="WI" selected="selected">Wisconsin</option>
     <option value="WY">Wyoming</option>
 </select></li>
-<li><input type="text" name="zip" placeholder="(Zip)"></li>
-<li><input type="text" name="phone" placeholder="(Phone)"></li>
-<li><input type="text" name="email" placeholder="(E-Mail)"></li>
-<li><input type="text" name="emergency_contact_name" placeholder="(Emergency Contact Name)"></li>
-<li><input type="text" name="emergency_contact_phone" placeholder="(Emergency Contact Phone)"></li>
+<li><input type="text" name="zip" placeholder="(Zip)"
+    value="<%= $args{zip} =%>"></li>
+<li><input type="text" name="phone" placeholder="(Phone)"
+    value="<%= $args{phone} =%>"></li>
+<li><input type="text" name="email" placeholder="(E-Mail)"
+    value="<%= $args{email} =%>"></li>
+<li><input type="text" name="emergency_contact_name" placeholder="(Emergency Contact Name)"
+    value="<%= $args{emerg_name} =%>"></li>
+<li><input type="text" name="emergency_contact_phone"
+    placeholder="(Emergency Contact Phone)"
+    value="<%= $args{emerg_phone} =%>"></li>
+</ul>
+
+<ul>
+    <li><input type="text" name="member_hosting"
+        placeholder="(Member Hosting You)"
+        value="<%= $args{hosting} =%>"></li>
+    <li><input type="text" name="heard_from"
+        placeholder="(How did you hear of us?)"
+        value="<%= $args{heard_about_from} =%>"></li>
+    <li><input type="checkbox" name="join_mailing_list" value="1"
+        <%= $args{do_join_mailing_list} ? 'checked="checked"' : '' =%>>
+        <label for="join_mailing_list">Join our mailing list?</label></li>
 </ul>
 
 <p>TODO signature</p>
-<p>TODO Date</p>
+% my $now = DateTime->now;
+<p>Date: <%= $now->ymd( '/' ) %>
 
-<p><input type="submit" placeholder="Submit"></p>
+<p><input type="submit" value="Submit"></p>
 
 </form>
 

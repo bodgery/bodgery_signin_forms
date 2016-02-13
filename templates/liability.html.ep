@@ -17,8 +17,8 @@
 </h1>
 
 <ul class="errors">
-<% my @errors = @{ $c->stash( 'errors' )}; %>
-<% my %args = %{ $c->stash( 'args' )}; %>
+<% my @errors = @{ $c->stash( 'errors' ) || [] }; %>
+<% my %args = %{ $c->stash( 'args' ) || {} }; %>
 %
 % foreach (@errors) {
 <li><%= $_; =%></li>

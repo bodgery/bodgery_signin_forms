@@ -14,10 +14,12 @@ CREATE TABLE liability_waivers (
     email TEXT NOT NULL,
     emergency_contact_name TEXT NOT NULL,
     emergency_contact_phone TEXT NOT NULL,
+    heard_from TEXT,
     signature TEXT NOT NULL
 );
 CREATE INDEX ON liability_waivers (lower(full_name));
 CREATE INDEX ON liability_waivers (created_date);
+CREATE INDEX ON liability_waivers (lower(email));
 
 
 CREATE TABLE guest_signin (
@@ -25,8 +27,9 @@ CREATE TABLE guest_signin (
     created_date TIMESTAMP NOT NULL DEFAULT NOW(),
     full_name TEXT NOT NULL,
     member_hosting TEXT,
-    heard_from TEXT,
+    email TEXT NOT NULL,
     join_mailing_list BOOLEAN NOT NULL
 );
 CREATE INDEX ON guest_signin (lower(full_name));
 CREATE INDEX ON guest_signin (created_date);
+CREATE INDEX ON guest_signin (lower(email));

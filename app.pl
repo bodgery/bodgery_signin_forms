@@ -37,7 +37,7 @@ use constant LIABILITY_INSERT => q{INSERT INTO liability_waivers}
     . q{, emergency_contact_name, emergency_contact_phone, signature)}
     . q{ VALUES (?, 1, 1, 1, 1, ?, ?, ?, ?, ?, ?, ?, ?)};
 use constant GUEST_INSERT => q{INSERT INTO guest_signin}
-    . q{ (full_name, member_hosting, heard_from, join_mailing_list)}
+    . q{ (full_name, member_hosting, email, join_mailing_list)}
     . q{ VALUES (?, ?, ?, ?)};
 
 
@@ -53,7 +53,35 @@ get '/guest-signin' => sub {
 
 post '/guest-signin' => sub {
     my ($c) = @_;
-    $c->render( template => 'guest_signin_submit' );
+    my $name = $c->param( 'full_name' );
+    my $email = $c->param( 'email' );
+    my $hosting = $c->param( 'member_hosting' );
+    my $heard_about_from = $c->param( 'heard_from' );
+    my $do_join_mailing_list = $c->param( 'join_mailing_list' );
+
+    # Force to boolean
+    $do_join_mailing_list = !! $do_join_mailing_list;
+
+    my $args = {
+        name => $name,
+        email => $email,
+        hosting => $hosting,
+        do_join_mailing_list => $do_join_mailing_list,
+    };
+
+    my @errors = check_guest_params( $args );
+
+    if( @errors ) {
+        $c->render(
+            template => 'guest_signin',
+            errors => \@errors,
+            args => $args,
+        );
+    }
+    else {
+        save_guest_data( $args );
+        $c->render( template => 'guest_signin_submit' );
+    }
 };
 
 get '/liability' => sub {
@@ -182,6 +210,28 @@ sub check_liability_params
     return @errors;
 }
 
+sub check_guest_params
+{
+    my ($args) = @_;
+    my @errors;
+
+    push @errors => 'Name not filled in' unless $args->{name};
+    push @errors => 'Name should be only letters and spaces'
+        # Using \w technically allows numbers, but that's OK
+        unless $args->{name} =~ /\A (?:[\w\s\.]*) \z/x;
+
+    push @errors => 'Email should have an "@" symbol'
+        unless $args->{email} =~ /@/x;
+    push @errors => 'Email should not have a "<" symbol'
+        # Just for XSS protection
+        if $args->{email} =~ /</x;
+
+    push @errors => 'Hosting Member should only be letters and spaces'
+        unless $args->{hosting} =~ /\A (?:[\w\s\.]*) \z/x;
+
+    return @errors;
+}
+
 sub save_liability_data
 {
     my ($args) = @_;
@@ -191,7 +241,7 @@ sub save_liability_data
     my $sth = $dbh->prepare_cached( LIABILITY_INSERT )
         or die "Can't prepare statement: " . $dbh->errstr;
     $sth->execute( @args{qw{ name addr city state zip phone email emerg_name emerg_phone 
-        signature }} )
+        heard_about_from signature }} )
         or die "Can't execute statement: " . $sth->errstr;
     $sth->finish;
 
@@ -206,7 +256,7 @@ sub save_guest_data
     my $dbh = get_dbh();
     my $sth = $dbh->prepare_cached( GUEST_INSERT )
         or die "Can't prepare statement: " . $dbh->errstr;
-    $sth->execute( @args{qw{ name hosting heard_about_from do_join_mailing_list }} )
+    $sth->execute( @args{qw{ name hosting email do_join_mailing_list }} )
         or die "Can't execute statement: " . $sth->errstr;
     $sth->finish;
 

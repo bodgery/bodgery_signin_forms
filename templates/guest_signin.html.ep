@@ -17,15 +17,28 @@
     <h2>Guest Signin</h2>
     </div>
 
+    <ul class="errors">
+    <% my @errors = @{ $c->stash( 'errors' ) || [] }; %>
+    <% my %args = %{ $c->stash( 'args' ) || {} }; %>
+    %
+    % foreach (@errors) {
+    <li><%= $_; =%></li>
+    % }
+    </ul>
+
+
     <div class="content">
         <form method="POST" action="/guest-signin">
         <ul>
-            <li><input type="text" name="full_name" placeholder="(Full Name)"></li>
+            <li><input type="text" name="full_name" placeholder="(Full Name)"
+                value="<%= $args{name} =%>"></li>
+            <li><input type="text" name="email" placeholder="(Email)"
+                value="<%= $args{email} =%>"></li>
             <li><input type="text" name="member_hosting"
-                placeholder="(Member Hosting You)"></li>
-            <li><input type="text" name="heard_from"
-                placeholder="(How did you hear of us?)"></li>
-            <li><input type="checkbox" name="join_mailing_list">
+                placeholder="(Member Hosting You)"
+                value="<%= $args{hosting} =%>"></li>
+            <li><input type="checkbox" name="join_mailing_list"
+                <%= $args{do_join_mailing_list} ? 'checked="checked"' : '' =%>>
                 <label for="join_mailing_list">Join our mailing list?</label></li>
         </ul>
         <p><input type="submit" value="Submit"></p>

@@ -7,7 +7,7 @@
 </head>
 <body>
 
-    <script type="javascript">
+    <script type="text/javascript">
         $(document).ready( function () {
             window.setTimeout( function () {
                 window.location.replace( "/index.html" );

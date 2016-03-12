@@ -184,11 +184,13 @@ sub check_liability_params
     push @errors => 'Phone should only be numbers, spaces, dashes, and parens'
         unless $args->{phone} =~ /\A (?:[\d\s\-\(\)]*) \z/x;
 
-    push @errors => 'Email should have an "@" symbol'
-        unless $args->{email} =~ /@/x;
-    push @errors => 'Email should not have a "<" symbol'
-        # Just for XSS protection
-        if $args->{email} =~ /</x;
+    if( $args->{email} ) {
+        push @errors => 'Email should have an "@" symbol'
+            unless $args->{email} =~ /@/x;
+        push @errors => 'Email should not have a "<" symbol'
+            # Just for XSS protection
+            if $args->{email} =~ /</x;
+    }
 
     push @errors => 'Emergency Contact Name not filled in' unless $args->{emerg_name};
     push @errors => 'Emergency Contact Name should only be letters and spaces'
@@ -221,11 +223,13 @@ sub check_guest_params
         # Using \w technically allows numbers, but that's OK
         unless $args->{name} =~ /\A (?:[\w\s\.]*) \z/x;
 
-    push @errors => 'Email should have an "@" symbol'
-        unless $args->{email} =~ /@/x;
-    push @errors => 'Email should not have a "<" symbol'
-        # Just for XSS protection
-        if $args->{email} =~ /</x;
+    if( $args->{email} ) {
+        push @errors => 'Email should have an "@" symbol'
+            unless $args->{email} =~ /@/x;
+        push @errors => 'Email should not have a "<" symbol'
+            # Just for XSS protection
+            if $args->{email} =~ /</x;
+    }
 
     push @errors => 'Hosting Member should only be letters and spaces'
         unless $args->{hosting} =~ /\A (?:[\w\s\.]*) \z/x;

@@ -43,7 +43,7 @@
 
 <form method="POST" action="/liability">
 
-<p>Between <input type="text" name="name" placeholder="(Your Name Here)" value="<%= $args{name} =%>"> and The Bodgery,
+<p>Between <input class="required" type="text" name="name" placeholder="(Your Name Here)" value="<%= $args{name} =%>"> and The Bodgery,
 4444 Robertson Rd., Madison, WI 53714.</p>
 
 <p><input type="checkbox" name="check1" value="1"
@@ -68,11 +68,11 @@ and that The Bodgery is not responsible for any lost, damaged, or stolen propert
 years of age or older, and that I am mentally competent to sign this release.</label></p>
 
 <ul class="form_list">
-<li><input type="text" name="addr" placeholder="(Address)"
+<li><input class="required" type="text" name="addr" placeholder="(Address)"
 value="<%= $args{addr} =%>"></li>
-<li><input type="text" name="city" placeholder="(City)"
+<li><input class="required" type="text" name="city" placeholder="(City)"
     value="<%= $args{city} || "Madison" =%>"></li>
-<li><select name="state">
+<li><select class="required" name="state">
     <option value="AL">Alabama</option>
     <option value="AK">Alaska</option>
     <option value="AZ">Arizona</option>
@@ -125,24 +125,25 @@ value="<%= $args{addr} =%>"></li>
     <option value="WI" selected="selected">Wisconsin</option>
     <option value="WY">Wyoming</option>
 </select></li>
-<li><input type="text" name="zip" placeholder="(Zip)"
+<li><input class="required" type="text" name="zip" placeholder="(Zip)"
     value="<%= $args{zip} =%>"></li>
-<li><input type="text" name="phone" placeholder="(Phone)"
+<li><input class="required" type="text" name="phone" placeholder="(Phone)"
     value="<%= $args{phone} =%>"></li>
-<li><input type="text" name="email" placeholder="(E-Mail)"
+<li><input class="optional" type="text" name="email" placeholder="(E-Mail)"
     value="<%= $args{email} =%>"></li>
-<li><input type="text" name="emergency_contact_name" placeholder="(Emergency Contact Name)"
+<li><input class="required" type="text" name="emergency_contact_name"
+    placeholder="(Emergency Contact Name)"
     value="<%= $args{emerg_name} =%>"></li>
-<li><input type="text" name="emergency_contact_phone"
+<li><input class="required" type="text" name="emergency_contact_phone"
     placeholder="(Emergency Contact Phone)"
     value="<%= $args{emerg_phone} =%>"></li>
 </ul>
 
 <ul>
-    <li><input type="text" name="member_hosting"
+    <li><input class="optional" type="text" name="member_hosting"
         placeholder="(Member Hosting You)"
         value="<%= $args{hosting} =%>"></li>
-    <li><input type="text" name="heard_from"
+    <li><input class="optional" type="text" name="heard_from"
         placeholder="(How did you hear of us?)"
         value="<%= $args{heard_about_from} =%>"></li>
     <li><input type="checkbox" name="join_mailing_list" value="1"

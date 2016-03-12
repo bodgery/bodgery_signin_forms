@@ -30,11 +30,11 @@
     <div class="content">
         <form method="POST" action="/guest-signin">
         <ul>
-            <li><input type="text" name="full_name" placeholder="(Full Name)"
-                value="<%= $args{name} =%>"></li>
-            <li><input type="text" name="email" placeholder="(Email)"
+            <li><input class="required" type="text" name="full_name"
+                placeholder="(Full Name)" value="<%= $args{name} =%>"></li>
+            <li><input class="optional" type="text" name="email" placeholder="(Email)"
                 value="<%= $args{email} =%>"></li>
-            <li><input type="text" name="member_hosting"
+            <li><input class="optional" type="text" name="member_hosting"
                 placeholder="(Member Hosting You)"
                 value="<%= $args{hosting} =%>"></li>
             <li><input type="checkbox" name="join_mailing_list"

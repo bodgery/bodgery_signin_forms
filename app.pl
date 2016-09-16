@@ -35,9 +35,9 @@ use constant DB_PASSWORD => '';
 use constant LIABILITY_INSERT => q{INSERT INTO liability_waivers}
     . q{ (full_name, check1, check2, check3, check4, zip, phone, email}
     . q{, emergency_contact_name, emergency_contact_phone, heard_from, signature)}
-    . q{ VALUES (?, true, true, true, true, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)};
+    . q{ VALUES (?, true, true, true, true, ?, ?, ?, ?, ?, ?, ?)};
 use constant GUEST_INSERT => q{INSERT INTO guest_signin}
-    . q{ (full_name, member_hosting, email, join_mailing_list, zip)}
+    . q{ (full_name, member_hosting, email, zip, join_mailing_list)}
     . q{ VALUES (?, ?, ?, ?, ?)};
 
 

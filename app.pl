@@ -33,12 +33,12 @@ use constant DB_USERNAME => '';
 use constant DB_PASSWORD => '';
 
 use constant LIABILITY_INSERT => q{INSERT INTO liability_waivers}
-    . q{ (full_name, check1, check2, check3, check4, addr, city, state, zip, phone, email}
+    . q{ (full_name, check1, check2, check3, check4, zip, phone, email}
     . q{, emergency_contact_name, emergency_contact_phone, heard_from, signature)}
     . q{ VALUES (?, true, true, true, true, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)};
 use constant GUEST_INSERT => q{INSERT INTO guest_signin}
-    . q{ (full_name, member_hosting, email, join_mailing_list)}
-    . q{ VALUES (?, ?, ?, ?)};
+    . q{ (full_name, member_hosting, email, join_mailing_list, zip)}
+    . q{ VALUES (?, ?, ?, ?, ?)};
 
 
 get '/' => sub {
@@ -58,16 +58,18 @@ post '/guest-signin' => sub {
     my $hosting = $c->param( 'member_hosting' );
     my $heard_about_from = $c->param( 'heard_from' );
     my $do_join_mailing_list = $c->param( 'join_mailing_list' );
+    my $zip = $c->param( 'zip' );
 
     # Force to boolean
     $do_join_mailing_list = !! $do_join_mailing_list;
 
-    my $args = {
+    my $args = trim_args({
         name => $name,
         email => $email,
         hosting => $hosting,
         do_join_mailing_list => $do_join_mailing_list,
-    };
+        zip => $zip,
+    });
 
     my @errors = check_guest_params( $args );
 
@@ -96,9 +98,6 @@ post '/liability' => sub {
     my $check2 = $c->param( 'check2' );
     my $check3 = $c->param( 'check3' );
     my $check4 = $c->param( 'check4' );
-    my $addr = $c->param( 'addr' );
-    my $city = $c->param( 'city' );
-    my $state = $c->param( 'state' );
     my $zip = $c->param( 'zip' );
     my $phone = $c->param( 'phone' );
     my $email = $c->param( 'email' );
@@ -112,15 +111,12 @@ post '/liability' => sub {
     # Force to boolean
     $do_join_mailing_list = !! $do_join_mailing_list;
 
-    my $args = {
+    my $args = trim_args({
         name => $name,
         check1 => $check1,
         check2 => $check2,
         check3 => $check3,
         check4 => $check4,
-        addr => $addr,
-        city => $city,
-        state => $state,
         zip => $zip,
         phone => $phone,
         email => $email,
@@ -130,7 +126,7 @@ post '/liability' => sub {
         heard_about_from => $heard_about_from,
         do_join_mailing_list => $do_join_mailing_list,
         signature => $signature,
-    };
+    });
 
     my @errors = check_liability_params( $args );
 
@@ -163,18 +159,6 @@ sub check_liability_params
     push @errors => 'Second checkbox is required' unless $args->{check2} == 1;
     push @errors => 'Third checkbox is required' unless $args->{check3} == 1;
     push @errors => 'Fourth checkbox is required' unless $args->{check4} == 1;
-
-    push @errors => 'Address not filled in' unless $args->{addr};
-    push @errors => 'Address should only be letters, numbers, and spaces'
-        unless $args->{addr} =~ /\A (?:[\w\s\.]*) \z/x;
-
-    push @errors => 'City not filled in' unless $args->{city};
-    push @errors => 'City should only be letters and spaces'
-        unless $args->{city} =~ /\A (?:[\w\s\.]*) \z/x;
-
-    push @errors => 'State not filled in' unless $args->{state};
-    push @errors => 'State should only be letters and spaces'
-        unless $args->{state} =~ /\A (?:[\w\s]*) \z/x;
 
     push @errors => 'Zip not filled in' unless $args->{zip};
     push @errors => 'Zip should only be numbers and dashes'
@@ -223,6 +207,10 @@ sub check_guest_params
         # Using \w technically allows numbers, but that's OK
         unless $args->{name} =~ /\A (?:[\w\s\.]*) \z/x;
 
+    push @errors => 'Zip not filled in' unless $args->{zip};
+    push @errors => 'Zip should only be numbers and dashes'
+        unless $args->{zip} =~ /\A (?:[\d\-]*) \z/x;
+
     if( $args->{email} ) {
         push @errors => 'Email should have an "@" symbol'
             unless $args->{email} =~ /@/x;
@@ -245,7 +233,7 @@ sub save_liability_data
     my $dbh = get_dbh();
     my $sth = $dbh->prepare_cached( LIABILITY_INSERT )
         or die "Can't prepare statement: " . $dbh->errstr;
-    $sth->execute( @args{qw{ name addr city state zip phone email emerg_name emerg_phone 
+    $sth->execute( @args{qw{ name zip phone email emerg_name emerg_phone 
         heard_about_from }}, '' )
         or die "Can't execute statement: " . $sth->errstr;
     $sth->finish;
@@ -263,11 +251,25 @@ sub save_guest_data
     my $dbh = get_dbh();
     my $sth = $dbh->prepare_cached( GUEST_INSERT )
         or die "Can't prepare statement: " . $dbh->errstr;
-    $sth->execute( @args{qw{ name hosting email }}, $do_join )
+    $sth->execute( @args{qw{ name hosting email zip }}, $do_join )
         or die "Can't execute statement: " . $sth->errstr;
     $sth->finish;
 
     return;
+}
+
+sub trim_args
+{
+    my ($args) = @_;
+
+    my %trimmed_args = map {
+        my $value = $args->{$_};
+        $value =~ s/\A\s*//;
+        $value =~ s/\s*\z//;
+        ($_ => $value);
+    } keys %$args;
+
+    return \%trimmed_args;
 }
 
 

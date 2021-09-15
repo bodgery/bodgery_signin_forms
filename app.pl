@@ -153,7 +153,7 @@ sub check_liability_params
     push @errors => 'Name not filled in' unless $args->{name};
     push @errors => 'Name should be only letters and spaces'
         # Using \w technically allows numbers, but that's OK
-        unless $args->{name} =~ /\A (?:[\w\s\.]*) \z/x;
+        unless $args->{name} =~ /\A (?:[\w\s\.\-]*) \z/x;
 
     push @errors => 'First checkbox is required' unless $args->{check1} == 1;
     push @errors => 'Second checkbox is required' unless $args->{check2} == 1;
@@ -178,17 +178,17 @@ sub check_liability_params
 
     push @errors => 'Emergency Contact Name not filled in' unless $args->{emerg_name};
     push @errors => 'Emergency Contact Name should only be letters and spaces'
-        unless $args->{emerg_name} =~ /\A (?:[\w\s\.]*) \z/x;
+        unless $args->{emerg_name} =~ /\A (?:[\w\s\.\-]*) \z/x;
 
     push @errors => 'Emergency Contact Phone not filled in' unless $args->{emerg_phone};
     push @errors => 'Emergency Contact Phone should only be numbers, spaces, dashes, and parens'
         unless $args->{emerg_phone} =~ /\A (?:[\d\s\-\(\)]*) \z/x;
 
     push @errors => 'Hosting Member should only be letters and spaces'
-        unless $args->{hosting} =~ /\A (?:[\w\s\.]*) \z/x;
+        unless $args->{hosting} =~ /\A (?:[\w\s\.\-]*) \z/x;
 
     push @errors => 'Heard About From should only be letters and spaces'
-        unless $args->{heard_about_from} =~ /\A (?:[\w\s\.]*) \z/x;
+        unless $args->{heard_about_from} =~ /\A (?:[\w\s\.\-]*) \z/x;
 
     # TODO signature
     #push @errors => 'Signature should be filled in' unless $args->{signature};
@@ -205,7 +205,7 @@ sub check_guest_params
     push @errors => 'Name not filled in' unless $args->{name};
     push @errors => 'Name should be only letters and spaces'
         # Using \w technically allows numbers, but that's OK
-        unless $args->{name} =~ /\A (?:[\w\s\.]*) \z/x;
+        unless $args->{name} =~ /\A (?:[\w\s\.\-]*) \z/x;
 
     push @errors => 'Zip not filled in' unless $args->{zip};
     push @errors => 'Zip should only be numbers and dashes'
@@ -220,7 +220,7 @@ sub check_guest_params
     }
 
     push @errors => 'Hosting Member should only be letters and spaces'
-        unless $args->{hosting} =~ /\A (?:[\w\s\.]*) \z/x;
+        unless $args->{hosting} =~ /\A (?:[\w\s\.\-]*) \z/x;
 
     return @errors;
 }

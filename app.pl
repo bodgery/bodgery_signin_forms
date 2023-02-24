@@ -27,10 +27,11 @@ use warnings;
 use Mojolicious::Lite;
 use DBI;
 use DateTime;
+use File::Slurp 'read_file';
+use YAML 'Load';
 
-use constant DB_NAME     => 'bodgery_liability';
-use constant DB_USERNAME => '';
-use constant DB_PASSWORD => '';
+use constant CONFIG_FILE => 'config.yml';
+my $CONFIG = read_config( CONFIG_FILE );
 
 use constant LIABILITY_INSERT => q{INSERT INTO liability_waivers}
     . q{ (full_name, check1, check2, check3, check4, zip, phone, email}
@@ -279,9 +280,9 @@ sub trim_args
     {
         return $dbh if defined $dbh;
         $dbh = DBI->connect(
-            'dbi:Pg:dbname=' . DB_NAME,
-            DB_USERNAME,
-            DB_PASSWORD,
+            'dbi:Pg:dbname=' . $CONFIG->{postgresql}{database},
+            $CONFIG->{postgresql}{username},
+            $CONFIG->{postgresql}{passwd},
             {
                 AutoCommit => 1,
                 RaiseError => 0,
@@ -296,6 +297,14 @@ sub trim_args
         $dbh = $in_dbh;
         return 1;
     }
+}
+
+sub read_config
+{
+    my ($file) = @_;
+    my $contents = read_file( $file );
+    my $config = Load( $contents );
+    return $config;
 }
 
 
